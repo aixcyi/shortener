@@ -1,5 +1,5 @@
 """
-django_template_repo 的项目设置。
+shortener 的项目设置。
 
 通过 `Django Template Repo <https://github.com/aixcyi/django-template-repo>`_
 模板创建；模板本身使用 Django 4.2.5 通过 'django-admin startproject' 命令生成。
@@ -56,6 +56,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'rest_framework',
+    'rest_framework.authtoken',
     'apps.core.app_conf.CoreConfig',
 ]
 
@@ -69,7 +71,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-ROOT_URLCONF = 'django_template_repo.urls'
+ROOT_URLCONF = 'shortener.urls'
 
 TEMPLATES = [
     dict(
@@ -89,7 +91,7 @@ TEMPLATES = [
     ),
 ]
 
-WSGI_APPLICATION = 'django_template_repo.wsgi.application'
+WSGI_APPLICATION = 'shortener.wsgi.application'
 
 # -------------------------------- 存储 --------------------------------
 
@@ -99,7 +101,7 @@ WSGI_APPLICATION = 'django_template_repo.wsgi.application'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # 用户模型
-AUTH_USER_MODEL = 'core.User'  # FIXME: 更改用户模型（仅在创建数据库前定义，后续不可更改）
+AUTH_USER_MODEL = 'core.User'
 
 # 数据库
 # https://docs.djangoproject.com/zh-hans/4.2/ref/settings/#databases
@@ -265,3 +267,15 @@ LOGGING = dict(
         ),
     },
 )
+
+# -------------------------------- 框架 --------------------------------
+
+# https://www.django-rest-framework.org/api-guide/settings/
+REST_FRAMEWORK = dict(
+    DATETIME_FORMAT='%Y-%m-%d %H:%M:%S',
+)
+
+# -------------------------------- 其它 --------------------------------
+
+ROOT = 'http://127.0.0.1:65432'
+BITS = 4

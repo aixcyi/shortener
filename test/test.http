@@ -1,0 +1,52 @@
+### 登录
+POST http://localhost:65432/token/
+Content-Type: application/json
+
+{
+  "username": "admin",
+  "password": "123456"
+}
+
+> {%
+    client.global.set("token", response.body['token'])
+%}
+
+
+### 生成短链接（有效期7天）
+POST http://localhost:65432/links/
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "target": "https://www.bilibili.com/festival/gswdm?bvid=BV1bW411n7fY",
+  "during_days": 7
+}
+
+
+### 生成短链接（永久有效）
+POST http://localhost:65432/links/
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "target": "https://www.bilibili.com/festival/gswdm?bvid=BV1bW411n7fY",
+  "during_days": null
+}
+
+
+### 列出我创建的所有短链接
+GET http://localhost:65432/links/
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+
+### 批量删除短链接
+DELETE http://localhost:65432/links/
+    ?id=1
+    &id=2
+    &id=3
+    &id=4
+    &id=5
+    &id=6
+Authorization: Bearer {{token}}
+Content-Type: application/json

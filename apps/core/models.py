@@ -1,5 +1,7 @@
+from django.conf import settings
 from django.contrib.auth.models import AbstractUser, UserManager
 from django.db import models
+from django.utils.timezone import now
 
 from utils.models import SnakeModel
 
@@ -28,3 +30,22 @@ class User(AbstractUser, metaclass=SnakeModel):
     class Meta:
         verbose_name = '用户'
         verbose_name_plural = '用户'
+
+
+class ShortLink(models.Model, metaclass=SnakeModel):
+    """
+    短链接记录表。
+    """
+    shorts = models.CharField('短链接字符', max_length=16, unique=True, db_index=True)
+    target = models.URLField('长链接', max_length=256)
+    creator = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='创建者')
+    create_at = models.DateTimeField('创建时间')
+    expire_at = models.DateTimeField('过期时间', null=True, default=None, blank=True)
+
+    @property
+    def link(self) -> str:
+        return f'{settings.ROOT}/{self.shorts}'
+
+    @property
+    def is_expired(self) -> bool:
+        return self.expire_at < now()
